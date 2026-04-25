@@ -157,10 +157,6 @@ npx expo start
 
 ---
 
-## ✅ 7. Buenas prácticas de contribución
 
-* **Diseño Orientado al Usuario:** Siempre mantén interfaces minimalistas, claras y escalables, evitando saturar la App con botones o acciones redundantes (como se reubicó correctamente el botón Salir).
-* **Gestión de Fechas Nativas (DB):** Es altamente imperativo manejar extracciones de fechas limpios provenientes de Python (`.isoformat()`) al exportar JSONs y esquivar la función `DATE_FORMAT()` con caracteres de porcentaje `%` desde la base de datos de MySQL para evitar colisiones con el driver Python `mysql-connector`.
-* **Hooks de Auth:** Si necesitas requerir protección de recursos, inyecta siempre las utilidades seguras del middleware frontend `<ProtectedRoute />` junto a `const { user } = useAuth();` en lugar de manipular `SecureStore` manualmente con fines de visualización general.
 
 
