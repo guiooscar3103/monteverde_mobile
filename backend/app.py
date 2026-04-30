@@ -24,15 +24,20 @@ from flask_cors import CORS
 import mysql.connector
 from datetime import datetime, timedelta
 import jwt
+import os
+from dotenv import load_dotenv
+
+# Cargar variables de entorno del archivo .env
+load_dotenv()
 
 app = Flask(__name__)
 
 # ==========================================
-# CORS SIMPLE Y DIRECTO
+# CORS SIMPLE Y DIRECTO (Cualquier origen en desarrollo)
 # ==========================================
 CORS(app, resources={
     r"/api/*": {
-        "origins": ["http://localhost:5173", "http://192.168.1.21:*", "*"],
+        "origins": "*",
         "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
         "allow_headers": "*"
     }
@@ -41,14 +46,15 @@ CORS(app, resources={
 # ==========================================
 # CONFIGURACIONES
 # ==========================================
-app.config['SECRET_KEY'] = 'monteverde-secret-2025'
+app.config['SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'e5b8d9c2f4a13e70b6d8f1c5a9e2304b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f')
 
 DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '',
-    'database': 'monteverde_db',
-    'charset': 'utf8mb4'
+    'host': os.getenv('DB_HOST', '127.0.0.1'),
+    'user': os.getenv('DB_USER', 'root'),
+    'password': os.getenv('DB_PASSWORD', ''),
+    'database': os.getenv('DB_NAME', 'monteverde_db'),
+    'charset': 'utf8mb4',
+    'use_pure': True
 }
 
 def get_db_connection():
@@ -677,7 +683,8 @@ def get_docentes():
 # =====================================================
 
 if __name__ == '__main__':
+    puerto = int(os.getenv('PORT', 5000))
     print("🚀 MonteVerde API iniciando...")
-    print("🌐 http://192.168.1.21:5000")
-    print("🔗 CORS permitido para localhost y 192.168.1.21")
-    app.run(debug=True, port=5000, host='192.168.1.21')
+    print(f"🌐 Escuchando en todas las interfaces (0.0.0.0) puerto {puerto}")
+    print("🔗 CORS permitido para cualquier origen (desarrollo)")
+    app.run(debug=True, port=puerto, host='0.0.0.0')

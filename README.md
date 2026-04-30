@@ -128,24 +128,54 @@ venv\Scripts\activate
 
 # Instalar dependencias dentro del entorno
 pip install -r requirements.txt
-# (o manualmente: pip install flask flask-cors mysql-connector-python pyjwt)
+# (o manualmente: pip install flask flask-cors mysql-connector-python pyjwt python-dotenv)
+```
 
+**Configuración del entorno Backend:**
+Crea un archivo llamado `.env` en la carpeta `backend` para configurar tu base de datos si tiene contraseña. (Si usas XAMPP con la configuración por defecto de `root` sin contraseña, puedes omitir algunas, pero es buena práctica tenerlo).
+Ejemplo de `.env` en el backend:
+```env
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=monteverde_db
+JWT_SECRET_KEY=e5b8d9c2f4a13e70b6d8f1c5a9e2304b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f
+```
+
+```bash
 # Correr el servidor localmente (Puerto base 5000)
 python app.py
 ```
+*(El servidor backend ya está configurado internamente para escuchar en `0.0.0.0`, por lo que funcionará en la red local de cualquier computador).*
 
-4. **Frontend:**
+4. **Frontend (App Móvil):**
+Para que la aplicación móvil logre comunicarse con el backend en la misma red, **debes configurar la IP local de la computadora** que está corriendo el servidor.
+
 ```bash
 # Abrir nueva terminal y navegar a la carpeta de la app móvil
 cd mobile
 
-# Instar dependencias (Node Modules)
+# Instalar dependencias (Node Modules)
 npm install
+```
 
+**Configuración de la Conexión (El paso más importante al cambiar de PC):**
+Crea un archivo llamado `.env` en la carpeta `mobile`. Adentro, escribe la dirección IP local de tu máquina seguida del puerto 5000 (puedes ver tu IP ejecutando `ipconfig` en Windows).
+Ejemplo de `.env` en el móvil:
+```env
+EXPO_PUBLIC_API_URL=http://192.168.1.X:5000
+```
+*(Reemplaza `192.168.1.X` por la IP real de tu PC actual)*
+
+```bash
 # Lanzar Expo bundler
 npx expo start
 ```
-*Atención:* En un emulador o simulador puedes pulsar `i` (iOS) o `a` (Android). Si usas tu propio dispositivo, escanea el código QR lanzado por la consola desde la aplicación secundaria *Expo Go*.
+*Atención:* 
+- En un emulador o simulador puedes pulsar `i` (iOS) o `a` (Android). 
+- Si usas tu dispositivo físico, escanea el código QR con la app **Expo Go**.
+- **Nota:** Si alguna vez te llevas el proyecto a otra PC o tu internet cambia de IP, solo debes actualizar el `.env` del `mobile` y reiniciar Expo limpiando caché con `npx expo start -c`.
 
 ---
 
